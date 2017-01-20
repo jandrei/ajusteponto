@@ -4,70 +4,75 @@
   <title>My Vue App</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="jquery.datetimepicker.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css">
+
 </head>
 <body>
   <div id="app">
     {{ message }}
 
-<br>
+    <br>
     <button type="button" v-on:click="limpar">Limpar</button><br>
     <button type="button" v-on:click="copiar">Carregar</button><br>
     <textarea type="text" v-model="dados" cols="100" rows="5"></textarea>
-      <br>
-      <br>
-      Iniciou em: {{data}}
-      <br>
-      <br>
+    <br>
+    <br>
+    Iniciou em: {{data}}
+    <br>
+    <br>
     <table border="1">
       <tr>
-        <td width="100" >Dia</td>
-        <td >&nbsp;</td>
-        <th >entrada1</td>
-        <th >saida1</td>
-        <td >&nbsp;</td>
-        <th >entrada2</td>
-        <th >saida2</td>
-        <td >&nbsp;</td>
-        <th >entrada 1 Extra</td>
-        <th >saida 1 Extra</td>
-        <td >&nbsp;</td>
-        <th >Total Validas</td>
-        <th >Total Extras</td>
+        <th width="100" >Dia</th>
+        <th>&nbsp;</th>
+        <th>entrada1</th>
+        <th>saida1</th>
+        <td>&nbsp;</th>
+        <th>entrada2</th>
+        <th>saida2</th>
+        <td>&nbsp;</th>
+        <th>entrada 1 Extra</th>
+        <th>saida 1 Extra</th>
+        <td>&nbsp;</th>
+        <th>Total Validas</th>
+        <th>Total Extras</th>
       </tr>
-      <tr v-for="(item, index) in linhas">
-        <td >{{ formataData(item.dia) }}</td>
-        <td >&nbsp;</td>
-        <td >{{ formataHoras(item.entrada1Original) }}</td>
-        <td >{{ formataHoras(item.saida1Original) }}</td>
-        <td >&nbsp;</td>
-        <td >{{ formataHoras(item.entrada2Original) }}</td>
-        <td >{{ formataHoras(item.saida2Original) }}</td>
-        <td >&nbsp;</td>
-        <td >{{ formataHoras(item.entrada1OriginalExtra) }}</td>
-        <td >{{ formataHoras(item.saida1OriginalExtra) }}</td>
-        <td >&nbsp;</td>
-        <td >{{ formataHoras(item.totalValidas) }}</td>
-        <td >{{ formataHoras(item.totalExtras) }}</td>
-      </tr>
-      <tr>
-        <td ></td>
-        <td >&nbsp;</td>
-        <td ></td>
-        <td ></td>
-        <td >&nbsp;</td>
-        <td ></td>
-        <td ></td>
-        <td >&nbsp;</td>
-        <td ></td>
-        <td ></td>
-        <td >&nbsp;</td>
-        <td >{{ (linhaTotal.totalValidas) }}</td>
-        <td >{{ (linhaTotal.totalExtras) }}</td>
-      </tr>
-    </table>
-  </div>
+            <tr v-for="(item, index) in linhas">
+              <td > {{ formataData(item.dia) }}</td>
+              <td >&nbsp;</td>
+              <td >{{ formataHoras(item.entrada1Original) }}</td>
+              <td >{{ formataHoras(item.saida1Original) }}</td>
+              <td >&nbsp;</td>
+              <td >{{ formataHoras(item.entrada2Original) }}</td>
+              <td >{{ formataHoras(item.saida2Original) }}</td>
+              <td >&nbsp;</td>
+              <td >{{ formataHoras(item.entrada1OriginalExtra) }}</td>
+              <td >{{ formataHoras(item.saida1OriginalExtra) }}</td>
+              <td >&nbsp;</td>
+              <td >{{ formataHoras(item.totalValidas) }}</td>
+              <td >{{ formataHoras(item.totalExtras) }}</td>
+            </tr>
+            <tr>
+              <td ></td>
+              <td >&nbsp;</td>
+              <td ></td>
+              <td ></td>
+              <td >&nbsp;</td>
+              <td ></td>
+              <td ></td>
+              <td >&nbsp;</td>
+              <td ></td>
+              <td ></td>
+              <td >&nbsp;</td>
+              <td >{{ (linhaTotal.totalValidas) }}</td>
+              <td >{{ (linhaTotal.totalExtras) }}</td>
+            </tr>
+          </table>
+        </div>
 
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
-  <script src="app.js"></script>
-</body>
-</html>
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>
+        <script src="jquery.min.js"></script>
+        <script src="jquery.datetimepicker.min.js"></script>
+        <script src="app.js"></script>
+      </body>
+      </html>
