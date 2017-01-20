@@ -9,26 +9,8 @@ var app = new Vue({
     diaInicial:null,
     mesInicial:null,
     anoInicial:null,
-    ultimaDataCalculada:null
-  },
-  created: function () {
-
-    var totalHoras = 0;
-    var totalMinutos = 0;
-
-    for(var i=0;i<3;i++){
-      var d2 = new Date(2016,12,31,10,45,30,0);
-
-      totalHoras += d2.getHours();
-      totalMinutos += d2.getMinutes();
-    }
-
-    var horas = totalMinutos/60;
-    var inteiro = Math.trunc(horas);
-    var decimal = horas -inteiro;
-
-    console.log(totalHoras + inteiro + decimal);
-
+    ultimaDataCalculada:null,
+    datetime:new Date()
   },
   methods: {
 
