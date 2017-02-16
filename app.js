@@ -33,6 +33,7 @@ var app = new Vue({
 
           var objData = new Date(vm.anoInicial,vm.mesInicial,vm.diaInicial, 0,0,0,0)
           vm.data = objData;
+          continue;
         }
 
         if (
