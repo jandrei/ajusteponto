@@ -90,7 +90,7 @@ var app = new Vue({
         var campos = row.split(";");
         retorno.dia = this.incrementaEPegaDiaCorreto(campos[0]);
 
-        if (campos[1].indexOf('SAB')>=0 || campos[1].indexOf('DOM')>=0){
+        if (campos.length < 5 || campos[1].indexOf('SAB')>=0 || campos[1].indexOf('DOM')>=0){
           return retorno;
         }
 
