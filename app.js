@@ -4,7 +4,7 @@ var app = new Vue({
     message: 'Hello Vue!',
     linhas:[],
     linhaTotal:{totalHoras:0,totalExtras:0},
-    dados:'',
+    dados:localStorage.getItem("dados")||'',
     data:null,
     diaInicial:null,
     mesInicial:null,
@@ -13,18 +13,31 @@ var app = new Vue({
     datetime:new Date()
   },
   methods: {
-
+    isEmpty: function(str) {
+        return (!str || 0 === str.length);
+    },
     copiar: function () {
-      var l = this.dados.split('\n');
       var lFiltrado = [];
       var vm = this;
+
+      var dadosLocalStorage = localStorage.getItem("dados");
+      var l = this.dados;
+
+      //se tiver algo em dados joga na dadosLocalStorage
+      if (!vm.isEmpty(l)){
+        dadosLocalStorage = l;
+      }
+
+      //grava no localstorage os novos dados
+      localStorage.setItem("dados", dadosLocalStorage);
+      //splita com os dados do localstorage
+      l = dadosLocalStorage.split('\n');
+
 
       l.forEach(function (row){
         if (row.indexOf("PERIODO") >0 && vm.data == null){
           //vm.data = row;
-          console.log(row);
           var data = row.trim().replace("PERIODO DE: ","");
-          console.log(data);
           data = data.slice(0,10);
           //var objData = new Date(year, month, day, hours, minutes, seconds, milliseconds)
           vm.diaInicial=data.slice(0,2);
@@ -33,7 +46,6 @@ var app = new Vue({
 
           var objData = new Date(vm.anoInicial,vm.mesInicial,vm.diaInicial, 0,0,0,0)
           vm.data = objData;
-          return;
         }
 
         if (
@@ -46,20 +58,38 @@ var app = new Vue({
           //  row.indexOf("DOM") < 0 &&
           row.indexOf("PONTO") < 0 &&
           row.indexOf("PON") < 0 &&
-          row.indexOf("PROCERGS")){
+          row.indexOf("PROCERGS") <=0){
 
             row = row.trim();
+            // row = row.replace('        ',';').replace(' ',';');
+            // while(row.indexOf(' ') >=0){
+            //   row = row.replace('  ',';');
+            //   row = row.replace(' ',';');
+            // }
+            // console.log(row)
+            //|01            1214 1312 1734   652|
+            //row|07        827 1145 1245 1727|
+//07        827 1145 1245 1727
 
-            row = row.replace('        ',';').replace(' ',';');
+            var r2 =
+            row.substring(0,2).trim()+";"+ //dia
+            row.substring(3,9).trim()+";"+ //observação ou sab, dom, fer
+            row.substring(09,14).trim()+";"+ //
+            row.substring(14,19).trim()+";"+ //
+            row.substring(19,24).trim()+";"+ //
+            row.substring(24,29).trim()+";"+ //
 
-            while(row.indexOf(' ') >=0){
-              row = row.replace('  ',';');
-              row = row.replace(' ',';');
-            }
-
+            row.substring(29,34).trim()+";"+ //
+            row.substring(34,39).trim()+";"+ //
+            row.substring(39,44).trim()+";"+ //
+            row.substring(44,49).trim()+";"+ //
+            "";
+console.log("r2|"+r2+"|")
+row = r2
             lFiltrado.push(vm.processaRow(row));
           }
         })
+
         this.linhas = lFiltrado;
         var totalHoras = 0;
         var totalMinutos = 0;
@@ -91,18 +121,22 @@ var app = new Vue({
         var campos = row.split(";");
         retorno.dia = this.incrementaEPegaDiaCorreto(campos[0]);
 
-        if (campos.length < 5 || campos[1].indexOf('SAB')>=0 || campos[1].indexOf('DOM')>=0){
+
+        if (campos.toString().indexOf('SAB')>=0
+        || campos.toString().indexOf('DOM')>=0
+        || campos.toString().indexOf('FER')>=0){
           return retorno;
         }
 
-        retorno.entrada1Original = this.pegaDiaEHoraCorreto(retorno.dia,this.horaToSeconds(campos[1]));
-        retorno.saida1Original = this.pegaDiaEHoraCorreto(retorno.dia,this.horaToSeconds(campos[2]));
-        retorno.entrada2Original = this.pegaDiaEHoraCorreto(retorno.dia,this.horaToSeconds(campos[3]));;
-        retorno.saida2Original = this.pegaDiaEHoraCorreto(retorno.dia,this.horaToSeconds(campos[4]));;
+//console.log(campos.toString())
+        retorno.entrada1Original = this.pegaDiaEHoraCorreto(retorno.dia,this.horaToSeconds(campos[2]));
+        retorno.saida1Original = this.pegaDiaEHoraCorreto(retorno.dia,this.horaToSeconds(campos[3]));
+        retorno.entrada2Original = this.pegaDiaEHoraCorreto(retorno.dia,this.horaToSeconds(campos[4]));;
+        retorno.saida2Original = this.pegaDiaEHoraCorreto(retorno.dia,this.horaToSeconds(campos[5]));;
+        retorno.entrada1OriginalExtra =this.pegaDiaEHoraCorreto(retorno.dia, this.horaToSeconds(campos[6]));;
+        retorno.saida1OriginalExtra = this.pegaDiaEHoraCorreto(retorno.dia,this.horaToSeconds(campos[7]));;
 
-        retorno.entrada1OriginalExtra =this.pegaDiaEHoraCorreto(retorno.dia, this.horaToSeconds(campos[5]));;
-        retorno.saida1OriginalExtra = this.pegaDiaEHoraCorreto(retorno.dia,this.horaToSeconds(campos[6]));;
-
+//console.log(JSON.stringify(retorno))
         retorno.totalValidas = this.somaTotalHorasValidas(retorno);
         retorno.totalExtras = this.somaTotalHorasExtras(retorno);
         return retorno;
